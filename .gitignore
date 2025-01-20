@@ -109,4 +109,6 @@ buildNumber.properties
 .metadata
 /*/.gitignore
 /*/.gitattributes
+.vscode
+.DS_Store
 
