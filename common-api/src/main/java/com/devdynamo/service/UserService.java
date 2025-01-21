@@ -1,5 +1,8 @@
 package com.devdynamo.service;
 
+import com.devdynamo.dto.UserRegisterDTO;
+import com.devdynamo.entity.User;
+
 public interface UserService {
-    String hello(String name);
+    User register(UserRegisterDTO registerDTO);
 }
