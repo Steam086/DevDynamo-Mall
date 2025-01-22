@@ -2,16 +2,18 @@ package com.devdynamo.user.service;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import com.devdynamo.dto.UserRegisterDTO;
 import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
-import com.devdynamo.user.UserRepository;
+import com.devdynamo.user.repository.UserRepository;
 
-public class UserSerivceImpl implements UserService {
+@Service
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public UserSerivceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

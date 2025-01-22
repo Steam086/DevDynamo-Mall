@@ -20,6 +20,8 @@ public class User {
 
     private String email;
     private String phone;
+    private String firstName;
+    private String lastName;
 
     @Column(name = "create_time")
     private LocalDateTime createTime;
