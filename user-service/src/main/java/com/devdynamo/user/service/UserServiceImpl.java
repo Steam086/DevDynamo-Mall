@@ -63,11 +63,12 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("用户名或密码错误");
         }
 
-        // generate token
+        // 生成token时可以包含用户角色信息
         String token = jwtUtil.generateToken(user.getUsername());
-        redisTemplate.opsForValue().set(token, user.getUsername(), TOKEN_EXPIRATION, TimeUnit.MILLISECONDS);
+        String redisKey = "token:" + user.getUsername();
+        redisTemplate.opsForValue().set(redisKey, token, TOKEN_EXPIRATION, TimeUnit.SECONDS);
 
-        return jwtUtil.generateToken(user.getUsername());
+        return token;
     }
 
     public void logout(String token) {
