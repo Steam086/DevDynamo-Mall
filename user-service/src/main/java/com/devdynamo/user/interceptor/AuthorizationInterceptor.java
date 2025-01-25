@@ -31,6 +31,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             String path = request.getRequestURI();
             String method = request.getMethod();
 
+            // 添加日志
+            System.out.println("Username: " + username);
+            System.out.println("Path: " + path);
+            System.out.println("Method: " + method);
+
             if (enforcer.enforce(username, path, method)) {
                 return true;
             }

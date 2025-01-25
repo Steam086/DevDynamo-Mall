@@ -35,15 +35,27 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Nacos Discovery -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>2022.0.0.0</version>
+            <version>${spring-cloud-alibaba.version}</version>
         </dependency>
+        
+        <!-- Nacos Config -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <version>2022.0.0.0</version>
+            <version>${spring-cloud-alibaba.version}</version>
+        </dependency>
+
+        <!-- Spring Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>${spring-cloud.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
         </dependency>
 
         <dependency>
@@ -61,6 +73,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-cloud.version>2022.0.0</spring-cloud.version>
+        <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
     </properties>
 
 </project>
