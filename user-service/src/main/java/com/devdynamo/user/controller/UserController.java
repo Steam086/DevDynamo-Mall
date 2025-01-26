@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
+import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserRegisterDTO;
 import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
-
+import com.devdynamo.user.util.JwtUtil;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/user")
@@ -29,9 +33,12 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     // 注册
@@ -54,16 +61,43 @@ public class UserController {
         }
     }
     
-    // 登录
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        return ResponseEntity.ok("Login successful");
-    }
-    
     // 登出
     @PostMapping("/logout")
-    public ResponseEntity<String> logout() {
-        return ResponseEntity.ok("Logout successful");
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String bearerToken) {
+        try {
+            log.info("Received logout request with token: {}", bearerToken);
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String username = jwtUtil.getUsernameFromToken(token);
+                if (username != null) {
+                    userService.logout(username);
+                    return ResponseEntity.ok("登出成功");
+                }
+            }
+            return ResponseEntity.badRequest().body("无效的token");
+        } catch (Exception e) {
+            log.error("Logout failed: ", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    // 登录
+    @PostMapping("/login")
+    public ResponseEntity<?> logout(@Valid @RequestBody UserLoginDTO loginDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        try {
+            String token = userService.login(loginDTO);
+            return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     // 获取用户信息
