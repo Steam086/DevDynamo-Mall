@@ -14,6 +14,7 @@ import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.repository.UserRepository;
 import com.devdynamo.user.util.JwtUtil;
+import org.casbin.jcasbin.main.Enforcer;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,12 +23,14 @@ public class UserServiceImpl implements UserService {
     private final RedisTemplate<String, String> redisTemplate;
     private final JwtUtil jwtUtil;
     private static final long TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 days
+    private final Enforcer enforcer;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RedisTemplate<String, String> redisTemplate, JwtUtil jwtUtil) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RedisTemplate<String, String> redisTemplate, JwtUtil jwtUtil, Enforcer enforcer) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.redisTemplate = redisTemplate;
         this.jwtUtil = jwtUtil;
+        this.enforcer = enforcer;
     }
 
     @Override
@@ -45,11 +48,15 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("邮箱格式不正确");
         }
 
-
         User user = new User();
         BeanUtils.copyProperties(registerDTO, user);
 
+        user.setUsername(registerDTO.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // 为新用户分配基础角色
+        enforcer.addGroupingPolicy(user.getUsername(), "user");
+        enforcer.savePolicy();
 
         return userRepository.save(user);
     }
@@ -71,8 +78,8 @@ public class UserServiceImpl implements UserService {
         return token;
     }
 
-    public void logout(String token) {
-        String redisKey = "token: " + token;
+    public void logout(String username) {
+        String redisKey = "token:" + username;
         redisTemplate.delete(redisKey);
     }
 
@@ -82,7 +89,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String username = jwtUtil.getUsernameFromToken(token);
-        String redisKey = "token: " + username;
+        String redisKey = "token:" + username;
         String storedToken = redisTemplate.opsForValue().get(redisKey);
 
         return token.equals(storedToken);

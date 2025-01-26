@@ -23,6 +23,8 @@ import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.util.JwtUtil;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/user")
@@ -32,6 +34,7 @@ public class UserController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
@@ -60,12 +63,20 @@ public class UserController {
     
     // 登出
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String bearerToken) {
         try {
-            String username = jwtUtil.getUsernameFromToken(token.replace("Bearer ", ""));
-            userService.logout(username);
-            return ResponseEntity.ok("登出成功");
+            log.info("Received logout request with token: {}", bearerToken);
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String username = jwtUtil.getUsernameFromToken(token);
+                if (username != null) {
+                    userService.logout(username);
+                    return ResponseEntity.ok("登出成功");
+                }
+            }
+            return ResponseEntity.badRequest().body("无效的token");
         } catch (Exception e) {
+            log.error("Logout failed: ", e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
