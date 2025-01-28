@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -55,8 +56,11 @@ public class TokenUtil {
             throw new ExpiredJwtException(claimsJws.getHeader(), claimsJws.getPayload(), "Token is expired");
         }
         // TODO How to replace the map ?
+        Set<Map.Entry<String, Object>> entries = claimsJws.getPayload().entrySet();
+        entries.forEach(entry -> {
+            map.put(entry.getKey(), entry.getValue());
+        });
         map.put("userId", userId);
-        map.put("isAdmin", claimsJws.getPayload().get("isAdmin"));
         return map;
     }
 }
