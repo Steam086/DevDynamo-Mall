@@ -102,8 +102,23 @@ public class UserController {
     
     // 获取用户信息
     @GetMapping("/info")
-    public ResponseEntity<String> getUserInfo() {   
-        return ResponseEntity.ok("User info retrieved successfully");
+    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String bearerToken) {
+        // TODO: 创建 UserInfoDTO 用于过滤敏感信息
+        // TODO: 需要包含：用户名、昵称、邮箱、创建时间等，过滤密码等敏感字段
+        try {
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String username = jwtUtil.getUsernameFromToken(token);
+                if (username != null) {
+                    User user = userService.getUserInfo(username);
+                    return ResponseEntity.ok(user);
+                }
+            }
+            return ResponseEntity.badRequest().body("invalid token");
+        } catch (Exception e) {
+            log.error("Get user info failed: ", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     // 更新用户信息

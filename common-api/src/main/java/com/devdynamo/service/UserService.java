@@ -8,4 +8,5 @@ public interface UserService {
     User register(UserRegisterDTO registerDTO);
     String login(UserLoginDTO loginDTO);
     void logout(String token);
+    User getUserInfo(String username);
 }

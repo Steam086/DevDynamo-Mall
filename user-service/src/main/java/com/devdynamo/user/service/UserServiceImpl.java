@@ -83,6 +83,10 @@ public class UserServiceImpl implements UserService {
         redisTemplate.delete(redisKey);
     }
 
+    public User getUserInfo(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("用户不存在"));
+    }
+
     public boolean validateToken(String token) {
         if (!jwtUtil.validateToken(token)) {
             return false;
