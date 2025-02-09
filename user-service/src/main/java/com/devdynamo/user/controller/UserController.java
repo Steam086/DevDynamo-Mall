@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserRegisterDTO;
+import com.devdynamo.dto.UserUpdateDTO;
 import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.util.JwtUtil;
@@ -102,19 +103,64 @@ public class UserController {
     
     // 获取用户信息
     @GetMapping("/info")
-    public ResponseEntity<String> getUserInfo() {   
-        return ResponseEntity.ok("User info retrieved successfully");
+    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String bearerToken) {
+        // TODO: 创建 UserInfoDTO 用于过滤敏感信息
+        // TODO: 需要包含：用户名、昵称、邮箱、创建时间等，过滤密码等敏感字段
+        try {
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String username = jwtUtil.getUsernameFromToken(token);
+                if (username != null) {
+                    User user = userService.getUserInfo(username);
+                    return ResponseEntity.ok(user);
+                }
+            }
+            return ResponseEntity.badRequest().body("invalid token");
+        } catch (Exception e) {
+            log.error("Get user info failed: ", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     // 更新用户信息
     @PutMapping("/update")
-    public ResponseEntity<String> updateUserInfo(@RequestBody User user) {
-        return ResponseEntity.ok("User info updated successfully");
+    public ResponseEntity<?> updateUserInfo(
+            @Valid @RequestBody UserUpdateDTO updateDTO,
+            @RequestHeader("Authorization") String bearerToken) {
+        try {
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String username = jwtUtil.getUsernameFromToken(token);
+                if (username != null) {
+                    User updatedUser = userService.updateUser(username, updateDTO);
+                    return ResponseEntity.ok(updatedUser);
+                }
+            }
+            return ResponseEntity.badRequest().body("无效的token");
+        } catch (Exception e) {
+            log.error("Update user failed: ", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     // 删除用户
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok("User deleted successfully");
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> deleteUser(
+            @PathVariable String username,
+            @RequestHeader("Authorization") String bearerToken) {
+        try {
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String currentUsername = jwtUtil.getUsernameFromToken(token);
+                if (currentUsername != null) {
+                    userService.deleteUser(currentUsername, username);
+                    return ResponseEntity.ok("用户删除成功");
+                }
+            }
+            return ResponseEntity.badRequest().body("无效的token");
+        } catch (Exception e) {
+            log.error("Delete user failed: ", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.devdynamo.user.service;
 
 import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserRegisterDTO;
+import com.devdynamo.dto.UserUpdateDTO;
 import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.repository.UserRepository;
@@ -83,6 +85,10 @@ public class UserServiceImpl implements UserService {
         redisTemplate.delete(redisKey);
     }
 
+    public User getUserInfo(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("用户不存在"));
+    }
+
     public boolean validateToken(String token) {
         if (!jwtUtil.validateToken(token)) {
             return false;
@@ -93,6 +99,55 @@ public class UserServiceImpl implements UserService {
         String storedToken = redisTemplate.opsForValue().get(redisKey);
 
         return token.equals(storedToken);
+    }
+
+    @Override
+    public void deleteUser(String currentUsername, String targetUsername) {
+        // 检查是否为管理员或者是否为自己的账号
+        List<String> roles = enforcer.getRolesForUser(currentUsername);
+        if (!roles.contains("admin") && !currentUsername.equals(targetUsername)) {
+            throw new RuntimeException("没有权限删除该用户");
+        }
+
+        User user = userRepository.findByUsername(targetUsername)
+                .orElseThrow(() -> new RuntimeException("用户不存在"));
+        
+        // 删除用户的角色
+        enforcer.deleteRolesForUser(targetUsername);
+        
+        // 删除Redis中的token
+        String redisKey = "token:" + targetUsername;
+        redisTemplate.delete(redisKey);
+        
+        // 删除用户
+        userRepository.delete(user);
+    }
+
+    @Override
+    public User updateUser(String username, UserUpdateDTO updateDTO) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("用户不存在"));
+        
+        // 如果要更新邮箱，检查新邮箱是否已被使用
+        if (updateDTO.getEmail() != null && !updateDTO.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(updateDTO.getEmail())) {
+                throw new RuntimeException("该邮箱已被使用");
+            }
+            user.setEmail(updateDTO.getEmail());
+        }
+        
+        // 更新其他字段
+        if (updateDTO.getFirstName() != null) {
+            user.setFirstName(updateDTO.getFirstName());
+        }
+        if (updateDTO.getLastName() != null) {
+            user.setLastName(updateDTO.getLastName());
+        }
+        if (updateDTO.getPhone() != null) {
+            user.setPhone(updateDTO.getPhone());
+        }
+        
+        return userRepository.save(user);
     }
 
 }

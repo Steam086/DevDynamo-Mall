@@ -63,6 +63,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             List<String> roles = enforcer.getRolesForUser(username);
             log.info("User roles: {}", roles);
             
+            // 检查权限策略
+            List<List<String>> policies = enforcer.getPolicy();
+            log.info("All policies: {}", policies);
+            
             // 检查权限
             boolean hasPermission = enforcer.enforce(username, path, method);
             log.info("Permission check result: {} for {}", hasPermission, username);
