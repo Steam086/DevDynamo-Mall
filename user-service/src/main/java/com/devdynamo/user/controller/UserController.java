@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserRegisterDTO;
+import com.devdynamo.dto.UserUpdateDTO;
 import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.util.JwtUtil;
@@ -123,8 +124,23 @@ public class UserController {
     
     // 更新用户信息
     @PutMapping("/update")
-    public ResponseEntity<String> updateUserInfo(@RequestBody User user) {
-        return ResponseEntity.ok("User info updated successfully");
+    public ResponseEntity<?> updateUserInfo(
+            @Valid @RequestBody UserUpdateDTO updateDTO,
+            @RequestHeader("Authorization") String bearerToken) {
+        try {
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String username = jwtUtil.getUsernameFromToken(token);
+                if (username != null) {
+                    User updatedUser = userService.updateUser(username, updateDTO);
+                    return ResponseEntity.ok(updatedUser);
+                }
+            }
+            return ResponseEntity.badRequest().body("无效的token");
+        } catch (Exception e) {
+            log.error("Update user failed: ", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     // 删除用户

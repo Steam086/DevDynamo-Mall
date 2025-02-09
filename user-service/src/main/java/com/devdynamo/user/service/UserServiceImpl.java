@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserRegisterDTO;
+import com.devdynamo.dto.UserUpdateDTO;
 import com.devdynamo.entity.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.repository.UserRepository;
@@ -120,6 +121,33 @@ public class UserServiceImpl implements UserService {
         
         // 删除用户
         userRepository.delete(user);
+    }
+
+    @Override
+    public User updateUser(String username, UserUpdateDTO updateDTO) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("用户不存在"));
+        
+        // 如果要更新邮箱，检查新邮箱是否已被使用
+        if (updateDTO.getEmail() != null && !updateDTO.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(updateDTO.getEmail())) {
+                throw new RuntimeException("该邮箱已被使用");
+            }
+            user.setEmail(updateDTO.getEmail());
+        }
+        
+        // 更新其他字段
+        if (updateDTO.getFirstName() != null) {
+            user.setFirstName(updateDTO.getFirstName());
+        }
+        if (updateDTO.getLastName() != null) {
+            user.setLastName(updateDTO.getLastName());
+        }
+        if (updateDTO.getPhone() != null) {
+            user.setPhone(updateDTO.getPhone());
+        }
+        
+        return userRepository.save(user);
     }
 
 }

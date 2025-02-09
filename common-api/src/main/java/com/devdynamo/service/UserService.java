@@ -2,6 +2,7 @@ package com.devdynamo.service;
 
 import com.devdynamo.dto.UserRegisterDTO;
 import com.devdynamo.dto.UserLoginDTO;
+import com.devdynamo.dto.UserUpdateDTO;
 import com.devdynamo.entity.User;
 
 public interface UserService {
@@ -10,4 +11,5 @@ public interface UserService {
     void logout(String token);
     User getUserInfo(String username);
     void deleteUser(String currentUsername, String targetUsername);
+    User updateUser(String username, UserUpdateDTO updateDTO);
 }

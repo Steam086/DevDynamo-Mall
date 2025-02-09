@@ -6,4 +6,5 @@ p, user, /api/user/logout, POST
 p, user, /api/user/info, GET
 p, admin, /api/user/*, DELETE
 p, user, /api/user/:username, DELETE
+p, user, /api/user/update, PUT
 g, testuser, user
