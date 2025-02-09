@@ -128,8 +128,23 @@ public class UserController {
     }
     
     // 删除用户
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok("User deleted successfully");
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> deleteUser(
+            @PathVariable String username,
+            @RequestHeader("Authorization") String bearerToken) {
+        try {
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.substring(7);
+                String currentUsername = jwtUtil.getUsernameFromToken(token);
+                if (currentUsername != null) {
+                    userService.deleteUser(currentUsername, username);
+                    return ResponseEntity.ok("用户删除成功");
+                }
+            }
+            return ResponseEntity.badRequest().body("无效的token");
+        } catch (Exception e) {
+            log.error("Delete user failed: ", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

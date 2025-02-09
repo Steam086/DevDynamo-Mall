@@ -3,3 +3,7 @@ p, user, /api/user/*, GET
 p, user, /api/user/register, POST
 p, user, /api/user/login, POST
 p, user, /api/user/logout, POST
+p, user, /api/user/info, GET
+p, admin, /api/user/*, DELETE
+p, user, /api/user/:username, DELETE
+g, testuser, user
