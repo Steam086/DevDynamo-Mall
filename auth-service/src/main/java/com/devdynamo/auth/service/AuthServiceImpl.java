@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Boolean verifyToken(String token) {
+    public boolean verifyToken(String token) {
         assert token != null;
         try{
             Map<String, Object> stringStringMap = tokenUtil.parseToken(token);

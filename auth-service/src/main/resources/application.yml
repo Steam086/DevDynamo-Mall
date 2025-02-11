@@ -4,7 +4,7 @@ dubbo:
   protocol:
     name: dubbo
   application:
-    qos-port: -1
+    qos-port: 22222
 #  registry:
 #    address: nacos://localhost:8848
 #    register-mode: instance
