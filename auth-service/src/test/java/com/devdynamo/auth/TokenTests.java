@@ -15,7 +15,7 @@ public class TokenTests {
     public void test() {
         String s = authService.deliverToken(123456);
         log.info(s);
-        Boolean b = authService.verifyToken(s);
-        log.info(b.toString());
+        boolean b = authService.verifyToken(s);
+        log.info(String.valueOf(b));
     }
 }

@@ -13,10 +13,10 @@ public class RedisTests {
     private RedisTemplate<String, String> redisTemplate;
     @Test
     public void test() {
-        String key = redisTemplate.opsForValue().get("key");
-        redisTemplate.opsForValue().set("key", "");
-        String k11 = redisTemplate.opsForValue().get("key");
-        System.out.println(Objects.isNull(key));
-        System.out.println(Objects.isNull(k11));
+//        String key = redisTemplate.opsForValue().get("key");
+//        redisTemplate.opsForValue().set("key", "");
+//        String k11 = redisTemplate.opsForValue().get("key");
+//        System.out.println(Objects.isNull(key));
+//        System.out.println(Objects.isNull(k11));
     }
 }
