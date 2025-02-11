@@ -21,6 +21,7 @@ public interface AuthService {
      * @return true 如果验证通过，否则返回false
      */
     boolean verifyToken(String token);
+
     default String renewToken(Integer userId){return "";};
 }
 // rpc DeliverTokenByRPC(DeliverTokenReq) returns (DeliveryResp) {}
