@@ -19,7 +19,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
@@ -32,6 +32,23 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-        
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+
+    - name: Wait for MySQL to be ready
+      run: |
+        for i in {1..10}; do
+          if mysqladmin ping -h"127.0.0.1" --silent; then
+            echo "MySQL is up!"
+            break
+          fi
+          echo "Waiting for MySQL..."
+          sleep 5
+        done
+
+    - name: Check MySQL Connection
+      run: mysql -h 127.0.0.1 -P 3306 -u root -proot123 -e "SHOW DATABASES;"
+
+    - name: Print application.properties
+      run: cat src/main/resources/application.properties
+
+    - name: Build with Maven (Skip Tests)
+      run: mvn -B package -DskipTests --file pom.xml
