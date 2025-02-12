@@ -70,7 +70,8 @@ jobs:
 
     # **清理旧版本的 Byte Buddy，确保使用最新版本**
     - name: Force update Byte Buddy
-      run: mvn dependency:purge-local-repository -DactTransitively=false -DmanualInclude="net.bytebuddy:byte-buddy"
+      run: mvn dependency:purge-local-repository -DmanualInclude="net.bytebuddy:byte-buddy"
+
 
     # **运行所有微服务的测试**
     - name: Build and test all microservices
