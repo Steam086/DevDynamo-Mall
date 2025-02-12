@@ -44,11 +44,16 @@ jobs:
           sleep 5
         done
 
-    - name: Check MySQL Connection
-      run: mysql -h 127.0.0.1 -P 3306 -u root -proot123 -e "SHOW DATABASES;"
+    - name: Find all application.properties
+      run: find . -name "application.properties"
 
-    - name: Print application.properties
-      run: cat src/main/resources/application.properties
-
-    - name: Build with Maven (Skip Tests)
-      run: mvn -B package -DskipTests --file pom.xml
+    - name: Build all microservices with Maven
+      run: |
+        for service in $(find . -maxdepth 1 -type d \( ! -name ".github" ! -name "logs" ! -name "." \)); do
+          if [[ -f "$service/pom.xml" ]]; then
+            echo "Building $service..."
+            cd $service
+            mvn -B package --file pom.xml
+            cd ..
+          fi
+        done
