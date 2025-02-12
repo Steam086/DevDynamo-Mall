@@ -44,6 +44,11 @@ jobs:
           sleep 5
         done
 
+    - name: Create MySQL database
+      run: |
+        mysql -h127.0.0.1 -uroot -proot123 -e "CREATE DATABASE IF NOT EXISTS dymall;"
+
+
     - name: Find all application.properties
       run: find . -name "application.properties"
 
