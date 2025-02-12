@@ -47,19 +47,19 @@ jobs:
     - name: Find all application.properties
       run: find . -name "application.properties"
 
-    - name: Build parent first
-      run: mvn clean install -N -DskipTests
+    - name: Build parent first (without skipping tests)
+      run: mvn clean install -N
 
     - name: Build common-api
-      run: mvn clean install -pl common-api -DskipTests
+      run: mvn clean install -pl common-api
 
-    - name: Build all microservices in order
+    - name: Build and test all microservices
       run: |
         for service in auth-service user-service cart-service checkout-service order-service; do
           if [[ -f "$service/pom.xml" ]]; then
-            echo "Building $service..."
+            echo "Building and testing $service..."
             cd $service
-            mvn clean install -DskipTests
+            mvn clean verify
             cd ..
           fi
         done
