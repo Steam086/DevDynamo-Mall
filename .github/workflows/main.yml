@@ -57,6 +57,10 @@ jobs:
 
     - name: Build common-api
       run: mvn clean install -pl common-api
+    
+    - name: Set environment variables for Mockito
+      run: echo "MOCKITO_FORCE_INLINE=true" >> $GITHUB_ENV
+
 
     - name: Build and test all microservices
       run: |
