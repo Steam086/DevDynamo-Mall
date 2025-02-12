@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,7 +24,6 @@ import com.devdynamo.service.UserService;
 import org.casbin.jcasbin.main.Enforcer;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-
 @SpringBootTest(properties = {
     "spring.cloud.nacos.config.enabled=false",
     "spring.cloud.nacos.discovery.enabled=false"
@@ -51,6 +51,19 @@ class UserServiceApplicationTests {
     @MockBean(name = "redisTemplate")
     private RedisTemplate<String, String> redisTemplate;
 
+    @BeforeEach
+    void setup() {
+        when(userRepository.existsByUsername(any())).thenReturn(false);
+        when(userRepository.existsByEmail(any())).thenReturn(false);
+        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
+        when(userRepository.save(any())).thenAnswer(invocation -> {
+            User user = invocation.getArgument(0);
+            user.setId(1L);
+            return user;
+        });
+        when(redisTemplate.opsForValue()).thenReturn(null);  // ✅ Mock Redis 操作
+    }
+
     @Test
     void testSuccessfulRegistration() {
         // 准备测试数据
@@ -58,20 +71,6 @@ class UserServiceApplicationTests {
         registerDTO.setUsername("testuser");
         registerDTO.setPassword("Test123456");
         registerDTO.setEmail("test@example.com");
-        
-        // 模拟用户名和邮箱不存在
-        when(userRepository.existsByUsername("testuser")).thenReturn(false);
-        when(userRepository.existsByEmail("test@example.com")).thenReturn(false);
-        
-        // 模拟密码加密
-        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
-        
-        // 模拟保存用户
-        User savedUser = new User();
-        savedUser.setUsername("testuser");
-        savedUser.setEmail("test@example.com");
-        savedUser.setPassword("encodedPassword");
-        when(userRepository.save(any())).thenReturn(savedUser);
         
         // 执行注册
         User result = userService.register(registerDTO);
@@ -82,3 +81,4 @@ class UserServiceApplicationTests {
         assertEquals("test@example.com", result.getEmail());
     }
 }
+
