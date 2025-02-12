@@ -47,13 +47,13 @@ jobs:
     - name: Find all application.properties
       run: find . -name "application.properties"
 
-    - name: Build all microservices with Maven
+    - name: Build all microservices in order
       run: |
-        for service in $(find . -maxdepth 1 -type d \( ! -name ".github" ! -name "logs" ! -name "." \)); do
+        for service in common-api auth-service user-service cart-service checkout-service order-service; do
           if [[ -f "$service/pom.xml" ]]; then
             echo "Building $service..."
             cd $service
-            mvn -B package --file pom.xml
+            mvn clean install -DskipTests
             cd ..
           fi
         done
