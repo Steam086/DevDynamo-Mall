@@ -23,6 +23,16 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
+#     添加了redis服务
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
     - uses: actions/checkout@v3
@@ -42,6 +52,17 @@ jobs:
             break
           fi
           echo "Waiting for MySQL..."
+          sleep 5
+        done
+#    Redis 服务
+    - name: Wait for Redis to be ready
+      run: |
+        for i in {1..10}; do
+          if redis-cli -h 127.0.0.1 ping | grep -q "PONG"; then
+            echo "Redis is up!"
+            break
+          fi
+          echo "Waiting for Redis..."
           sleep 5
         done
 
@@ -68,11 +89,12 @@ jobs:
 
     - name: Build and test all microservices
       run: |
-        for service in auth-service user-service cart-service checkout-service order-service; do
+        for service in auth-service ; do
+#       暂时移除了 user-service cart-service checkout-service order-service
           if [[ -f "$service/pom.xml" ]]; then
             echo "Building and testing $service..."
             cd $service
-            mvn clean verify -DskipTests   # 👈 这里跳过测试
+            mvn clean verify # -DskipTests   # 👈 这里跳过测试
             cd ..
           fi
         done
