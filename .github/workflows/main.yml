@@ -86,11 +86,10 @@ jobs:
 
     - name: Force update Byte Buddy
       run: mvn dependency:purge-local-repository -DmanualInclude="net.bytebuddy:byte-buddy"
-
+      #       暂时移除了 user-service cart-service checkout-service
     - name: Build and test all microservices
       run: |
-        for service in auth-service ; do
-#       暂时移除了 user-service cart-service checkout-service order-service
+        for service in auth-service order-service; do
           if [[ -f "$service/pom.xml" ]]; then
             echo "Building and testing $service..."
             cd $service
