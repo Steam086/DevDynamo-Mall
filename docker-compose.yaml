@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dymall
+#      MYSQL_USER: your_user
+#      MYSQL_PASSWORD: your_password
+
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - your_network
+
+  nacos:
+    image: nacos/nacos-server:v2.2.3
+    container_name: nacos-standalone
+    environment:
+      - MODE=standalone
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    volumes:
+      - ./standalone-logs/:/home/nacos/logs
+    networks:
+      - your_network
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
+    restart: always
+
+  redis:
+    image: redis:7.4
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - your_network
+
+networks:
+  your_network:
+
+volumes:
+  mysql_data:
