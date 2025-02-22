@@ -11,10 +11,21 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
+      nacos:
+        image: nacos/nacos-server:v2.2.3
+        env:
+          - MODE=standalone
+        ports:
+          - 8848:8848
+          - 9848:9848
+          - 9849:9849
+#        volumes:
+#          - ./standalone-logs/:/home/nacos/logs
+
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root123
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: dymall
         ports:
           - 3306:3306
@@ -68,7 +79,7 @@ jobs:
 
     - name: Create MySQL database
       run: |
-        mysql -h127.0.0.1 -uroot -proot123 -e "CREATE DATABASE IF NOT EXISTS dymall;"
+        mysql -h127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS dymall;"
 
     - name: Build parent first (without skipping tests)
       run: mvn clean install -N
@@ -89,7 +100,7 @@ jobs:
       #       暂时移除了 user-service cart-service checkout-service
     - name: Build and test all microservices
       run: |
-        for service in auth-service order-service; do
+        for service in auth-service order-service user-service; do
           if [[ -f "$service/pom.xml" ]]; then
             echo "Building and testing $service..."
             cd $service
