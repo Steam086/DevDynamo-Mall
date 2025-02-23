@@ -31,7 +31,7 @@ services:
 #    depends_on:
 #      mysql:
 #        condition: service_healthy
-    restart: always
+#    restart: always
 
   redis:
     image: redis:7.4
