@@ -26,6 +26,7 @@
     </properties>
 
     <modules>
+        <module>AI-service</module>
         <module>common-api</module>
         <module>user-service</module>
         <module>auth-service</module>

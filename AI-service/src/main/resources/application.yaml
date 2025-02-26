@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ai-service
+
+doubao:
+  api_key:
+    { 豆包api_key }
+#douban.api.key=${DOUBAN_API_KEY:your_api_key_here}
