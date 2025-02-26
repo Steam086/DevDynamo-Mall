@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: cart-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/dymall?useSSL=false
+    username: root
+    password: Zsy040625
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+dubbo:
+  application:
+    name: ${spring.application.name}
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848
