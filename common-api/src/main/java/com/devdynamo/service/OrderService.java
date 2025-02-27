@@ -18,6 +18,13 @@ public interface OrderService {
     List<Order> listOrder(Long userId);
 
     /**
+     * 获取指定id的订单
+     * @param orderId 订单id
+     * @return Order 对应id的订单
+     */
+    Order getOrder(Long orderId);
+
+    /**
      * 删除订单
      * @param id 待删除的订单id
      */

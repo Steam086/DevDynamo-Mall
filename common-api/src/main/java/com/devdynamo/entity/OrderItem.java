@@ -1,9 +1,11 @@
 package com.devdynamo.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
-@Table("order_item")
+@Table(name = "order_item")
+@Data
 public class OrderItem {
 
     @Id
