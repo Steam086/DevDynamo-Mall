@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+// 使用反引号包裹order关键字
+@Table(name = "`order`")
 @Data
 public class Order {
     @Id
