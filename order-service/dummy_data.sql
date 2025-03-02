@@ -1,7 +1,14 @@
-
-
+CREATE DATABASE IF NOT EXISTS `order`;
+use `order`;
 
 -- 生成 10 条随机Address数据
+# CREATE TABLE IF NOT EXISTS address(
+#
+#
+#
+#
+#
+# );
 INSERT INTO address (country, state, city, street, zipcode)
 VALUES
     ('USA', 'California', 'Los Angeles', '1234 Sunset Blvd', FLOOR(10000 + (RAND() * 9999))),
