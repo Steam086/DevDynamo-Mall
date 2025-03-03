@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 // 使用反引号包裹order关键字
+
 @Table(name = "`order`")
 @Data
 public class Order {
@@ -20,7 +21,7 @@ public class Order {
 
     // 订单填写的地址
     @ManyToOne
-    @JoinColumn(name = "address_id")
+//    @JoinColumn(name = "address_id")
     Address address;
 
     @OneToMany
