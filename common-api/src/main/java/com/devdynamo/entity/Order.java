@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "`order`")
 @Data
 public class Order {
     @Id
@@ -19,7 +19,7 @@ public class Order {
 
     // 订单填写的地址
     @ManyToOne
-    @JoinColumn(name = "address_id")
+//    @JoinColumn(name = "address_id")
     Address address;
 
     @OneToMany
