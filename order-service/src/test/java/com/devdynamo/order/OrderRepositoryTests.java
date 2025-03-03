@@ -34,7 +34,7 @@ class OrderRepositoryTests {
     void findAll(){
 //        List<Order> orders = orderRepository.findAll();
         orderRepository.findAll().forEach(System.out::println);
-        orderRepository.findById(1L).ifPresent(System.out::println);
+        orderRepository.findById("1").ifPresent(System.out::println);
     }
 
 }

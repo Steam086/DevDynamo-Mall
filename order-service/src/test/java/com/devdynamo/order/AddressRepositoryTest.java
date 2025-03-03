@@ -1,6 +1,7 @@
 package com.devdynamo.order;
 
 import com.devdynamo.entity.Address;
+import com.devdynamo.entity.Order;
 import com.devdynamo.order.repository.AddressRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class AddressRepositoryTest {
     @Test
     public void findAll() {
         List<Address> addresses = repository.findAll();
+        List<Order> orders = List.of();
         addresses.forEach(System.out::println);
     }
 
