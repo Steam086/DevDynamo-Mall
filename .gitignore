@@ -111,4 +111,5 @@ buildNumber.properties
 /*/.gitattributes
 .vscode
 .DS_Store
+./standalone-logs/*
 
