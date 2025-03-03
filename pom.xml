@@ -102,7 +102,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                 <!-- 只在有@SpringBootApplication注解的模块中执行打包 -->
-                <skip>${skip.boot.repackage}</skip>
+<!--                <skip>${skip.boot.repackage}</skip>-->
             </configuration>
             </plugin>
         </plugins>
