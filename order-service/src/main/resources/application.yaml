@@ -1,0 +1,8 @@
+dubbo:
+  application:
+    name: order-service
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848

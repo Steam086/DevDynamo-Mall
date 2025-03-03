@@ -1,5 +1,6 @@
 package com.devdynamo.service;
 import com.devdynamo.dto.CreditCardInfo;
+import com.devdynamo.entity.Payment;
 
 public interface PaymentService {
     /**
@@ -11,4 +12,8 @@ public interface PaymentService {
      * @return 交易ID
      */
     String processPayment(Float amount, CreditCardInfo creditCard, String orderId, Long userId);
+
+    void cancelPayment(String orderId, Long userId);
+
+    Payment getPayment(String orderId);
 }
