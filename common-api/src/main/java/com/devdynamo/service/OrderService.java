@@ -1,5 +1,6 @@
 package com.devdynamo.service;
 
+import com.devdynamo.constant.OrderStatus;
 import com.devdynamo.entity.Order;
 import java.util.List;
 
@@ -36,6 +37,20 @@ public interface OrderService {
      * @param orderId 订单id
      */
     void markOrderAsPaid(Long userId, Long orderId);
+
+    /**
+     * 订单结算
+     * @param orderId 订单ID
+     * @return 结算金额
+     */
+    Float calculateOrder(String orderId);
+    
+    /**
+     * 更新订单支付状态
+     * @param orderId 订单ID
+     * @param status 订单状态
+     */
+    void updateOrderStatus(String orderId, OrderStatus status);
 
 //    /**
 //     * 可选，修改订单信息

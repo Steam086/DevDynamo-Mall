@@ -1,51 +1,41 @@
 package com.devdynamo.entity;
 
-import com.devdynamo.constant.OrderStatus;
+import com.devdynamo.constant.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-// 使用反引号包裹order关键字
-
-@Table(name = "`order`")
+@Table(name = "payment")
 @Data
-public class Order {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // 订单创建者
+    
+    private Float amount;
+    private String orderId;
     private Long userId;
-
-    // 订单填写的地址
-    @ManyToOne
-//    @JoinColumn(name = "address_id")
-    Address address;
-
-    @OneToMany
-    List<OrderItem> orderItems;
-
-    // 订单状态，枚举
-    OrderStatus status;
-
-    @Column(name = "create_time")
+    private String transactionId;
+    
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+    
     private LocalDateTime createTime;
-
-    @Column(name = "update_time")
+    private LocalDateTime expireTime;  // 支付过期时间
     private LocalDateTime updateTime;
-
-
+    
     @PrePersist
     public void prePersist() {
         this.createTime = LocalDateTime.now();
         this.updateTime = LocalDateTime.now();
+        this.status = PaymentStatus.PENDING;
+        // 设置15分钟后过期
+        this.expireTime = LocalDateTime.now().plusMinutes(15);
     }
-
+    
     @PreUpdate
     public void preUpdate() {
         this.updateTime = LocalDateTime.now();
     }
-
 }
