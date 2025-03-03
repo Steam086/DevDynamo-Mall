@@ -4,7 +4,7 @@ dubbo:
   protocol:
     name: dubbo
   application:
-    qos-port: 22222
+    qos-port: 22221
     logger: slf4j
   registry:
     address: nacos://localhost:8848

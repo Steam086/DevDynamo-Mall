@@ -1,6 +1,8 @@
 package com.devdynamo.service;
 
 import com.devdynamo.entity.Order;
+import jakarta.validation.constraints.Null;
+
 import java.util.List;
 
 public interface OrderService {
@@ -20,7 +22,7 @@ public interface OrderService {
     /**
      * 获取指定id的订单
      * @param orderId 订单id
-     * @return Order 对应id的订单
+     * @return Order 对应id的订单，搜索不到返回null
      */
     Order getOrder(Long orderId);
 

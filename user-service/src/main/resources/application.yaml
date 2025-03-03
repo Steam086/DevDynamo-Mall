@@ -6,6 +6,7 @@ dubbo:
   application:
 #    qos-port: 22222
     logger: slf4j
+    qos-port:
   registry:
     address: nacos://localhost:8848
     register-mode: instance

@@ -3,7 +3,9 @@ package com.devdynamo.user.service;
 import java.util.concurrent.TimeUnit;
 import java.util.List;
 
+import com.devdynamo.service.AuthService;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -19,14 +19,12 @@ public class OrderController {
 
     private final OrderService orderService;
 
-
-
     /**
      * 创建订单
      * @return 创建的订单
      */
-    @PostMapping("/")
-    public ResponseEntity<?> createOrder(Order order) {
+    @PostMapping
+    public ResponseEntity<?> createOrder(@RequestBody Order order) {
         try{
             orderService.createOrder(order);
         }
@@ -42,7 +40,7 @@ public class OrderController {
      * 修改订单信息，可选
      * @return
      */
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<?> updateOrder(){
         return ResponseEntity.ok().build();
     }
