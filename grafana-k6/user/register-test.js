@@ -2,12 +2,14 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 export const options = {
-  vus: 10,
-  duration: '30s',
+  vus: 100,
+  duration: '100s',
 };
 
+const url = 'http://localhost:8080/api/user/register';
+
 export default function() {
-  const url = 'http://localhost:8080/api/user/register';
+
   let num=Math.round(Math.random()*100000);
 
   const payload = JSON.stringify({

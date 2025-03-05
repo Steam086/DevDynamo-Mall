@@ -1,0 +1,15 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'k6'
+    static_configs:
+      - targets: ['localhost:6565']  # K6 Prometheus 远程输出
+
+remote_write:
+  - url: "http://localhost:9090/api/v1/write"  # 远程存储写入地址

@@ -50,8 +50,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getOrder(String orderId) {
         assert orderId != null;
-        Optional<Order> order = orderRepository.findById(orderId);
-        return order.orElse(null);
+
+        try{
+            Optional<Order> order = orderRepository.findById(orderId);
+            return order.orElse(null);
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -60,6 +67,7 @@ public class OrderServiceImpl implements OrderService {
         assert orderId != null;
         try{
             orderRepository.deleteById(orderId);
+            throw new RuntimeException("test Transaction");
         }catch(Exception e){
             log.error(e.getMessage());
         }

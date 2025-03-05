@@ -6,50 +6,41 @@ export const options = {
     duration: '30s',
 };
 
-export default function() {
-    const url = 'http://localhost:8080/api/order';
-    let num=Math.round(Math.random()*100000);
+// 动态生成订单数据
+function generateOrderData() {
+    const userId = Math.floor(Math.random() * 1000); // 随机生成用户ID
+    const addressId = Math.floor(Math.random() * 100); // 随机生成地址ID
+    const orderItemsCount = Math.floor(Math.random() * 5) + 1; // 随机生成订单项数量
 
-    let orderItems = []
-    for (let i =0; i<10;i++){
+    const orderItems = [];
+    for (let i = 0; i < orderItemsCount; i++) {
         orderItems.push({
-            productId: num,
-            quantity: num
-        })
+            productId: Math.floor(Math.random() * 100), // 随机生成产品ID
+            quantity: Math.floor(Math.random() * 10) + 1, // 随机生成数量
+        });
     }
-    const payload = JSON.stringify({
-        userId: 'au1234' + num,
-        email: `a${num}@gmail.com`,
+
+    return {
+        userId: userId,
         address: {
-            country: 'America',
-            state: 'New York',
-            city: 'momo',
-            street: 'central street',
-            zipcode: '245154'
+            id: addressId,
+            // 其他地址相关字段
         },
-        orderItems: [
-            {
-
-            },
-            {
-                productId: num,
-                quantity: num
-            },
-            {
-                productId: num,
-                quantity: num
-            }
-        ],
-        status: 'PAID',
-
-    });
-
-    const params = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        orderItems: orderItems,
+        status: 'PENDING', // 假设有一个 PENDING 状态
     };
-    let res = http.post(url, payload, params);
+}
+const BASE_URL = 'http://localhost/api/order';
+const params = {
+    headers: {
+        'Content-Type': 'application/json',
+    },
+}
+export default function () {
+    const orderData = generateOrderData(); // 生成动态订单数据
+    let payload = JSON.stringify(orderData)
+
+    const response = http.post(BASE_URL, payload, params);
     check(res, { "status is 200": (res) => res.status === 200 });
     sleep(1);
 }
