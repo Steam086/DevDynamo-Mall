@@ -10,3 +10,17 @@ dubbo:
   registry:
     address: nacos://localhost:8848
     register-mode: instance
+
+spring:
+  elasticsearch:
+    uris: http://localhost:9200
+#    username: jjr
+#    password: 12345678
+
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /
+    username: guest
+    password: guest
