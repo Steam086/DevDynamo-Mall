@@ -1,8 +1,8 @@
 package com.devdynamo.order;
 
-import com.devdynamo.entity.Address;
-import com.devdynamo.entity.Order;
-import com.devdynamo.entity.OrderItem;
+import com.devdynamo.entity.order.Address;
+import com.devdynamo.entity.order.Order;
+import com.devdynamo.entity.order.OrderItem;
 import com.devdynamo.order.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

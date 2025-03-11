@@ -1,7 +1,7 @@
 package com.devdynamo.order.controller;
 
 
-import com.devdynamo.entity.Order;
+import com.devdynamo.entity.order.Order;
 import com.devdynamo.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

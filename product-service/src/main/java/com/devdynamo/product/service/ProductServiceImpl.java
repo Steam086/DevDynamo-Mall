@@ -1,10 +1,8 @@
 package com.devdynamo.product.service;
 
 
-import com.devdynamo.entity.Product;
+import com.devdynamo.entity.product.Product;
 import com.devdynamo.service.ProductService;
-import org.apache.dubbo.config.annotation.DubboReference;
-import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -3,9 +3,7 @@ package com.devdynamo.user.service;
 import java.util.concurrent.TimeUnit;
 import java.util.List;
 
-import com.devdynamo.service.AuthService;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserRegisterDTO;
 import com.devdynamo.dto.UserUpdateDTO;
-import com.devdynamo.entity.User;
+import com.devdynamo.entity.user.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.repository.UserRepository;
 import com.devdynamo.user.util.JwtUtil;

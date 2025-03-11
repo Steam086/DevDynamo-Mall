@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-import com.devdynamo.entity.Payment;
+import com.devdynamo.entity.payment.Payment;
 import com.devdynamo.payment.dto.ChargeRequest;
 import com.devdynamo.payment.dto.ChargeResponse;
 import com.devdynamo.service.PaymentService;

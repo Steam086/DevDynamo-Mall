@@ -1,8 +1,7 @@
 package com.devdynamo.order.controller;
 
-import com.devdynamo.entity.Address;
+import com.devdynamo.entity.order.Address;
 import com.devdynamo.order.repository.AddressRepository;
-import com.devdynamo.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

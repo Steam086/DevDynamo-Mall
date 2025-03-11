@@ -1,9 +1,8 @@
 package com.devdynamo.service;
 
 import com.devdynamo.constant.OrderStatus;
-import com.devdynamo.entity.Order;
+import com.devdynamo.entity.order.Order;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 
 import java.util.List;
 

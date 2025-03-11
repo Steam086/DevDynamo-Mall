@@ -1,4 +1,4 @@
-package com.devdynamo.entity;
+package com.devdynamo.entity.cart;
 
 import jakarta.persistence.*;
 import lombok.Data;

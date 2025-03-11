@@ -18,7 +18,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 
 import com.devdynamo.dto.UserRegisterDTO;
-import com.devdynamo.entity.User;
+import com.devdynamo.entity.user.User;
 import com.devdynamo.user.repository.UserRepository;
 import com.devdynamo.service.UserService;
 import org.casbin.jcasbin.main.Enforcer;

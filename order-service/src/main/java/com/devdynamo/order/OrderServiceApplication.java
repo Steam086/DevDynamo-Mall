@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EntityScan("com.devdynamo.entity")
+@EntityScan("com.devdynamo.entity.order")
 @EnableDubbo
 @EnableJpaRepositories("com.devdynamo.order.repository")
 public class OrderServiceApplication {

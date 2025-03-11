@@ -1,30 +1,23 @@
-package com.devdynamo.entity;
+package com.devdynamo.entity.cart;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "product")
-public class Product {
-
-    // TODO 尚不完整
+@Table(name = "cart_item")
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private String picture;
-    private Double price;
 
-    /**
-     * 是不是能自动创建
-     */
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Category> categories;
+    @ManyToOne
+    private Cart cartId;
+
+    private Long productId;
+    private Integer quantity;
 
     @Column(name = "create_time")
     private LocalDateTime createTime;
@@ -36,11 +29,6 @@ public class Product {
     @PrePersist
     public void prePersist() {
         this.createTime = LocalDateTime.now();
-        this.updateTime = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
         this.updateTime = LocalDateTime.now();
     }
 }

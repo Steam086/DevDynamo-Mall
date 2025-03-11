@@ -1,6 +1,6 @@
 package com.devdynamo.service;
 
-import com.devdynamo.entity.Product;
+import com.devdynamo.entity.product.Product;
 
 import java.util.List;
 

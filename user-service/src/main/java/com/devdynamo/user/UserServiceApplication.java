@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 //@EnableDiscoveryClient
-@EntityScan("com.devdynamo.entity")
+@EntityScan("com.devdynamo.entity.user")
 @EnableDubbo
 @EnableJpaRepositories("com.devdynamo.user.repository")
 public class UserServiceApplication {
