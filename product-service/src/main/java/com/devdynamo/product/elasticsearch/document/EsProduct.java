@@ -1,4 +1,4 @@
-package com.devdynamo.product.document;
+package com.devdynamo.product.elasticsearch.document;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -6,6 +6,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,8 +16,11 @@ import java.util.List;
 @Data
 @Document(indexName = "product")
 public class EsProduct{
+    /**
+     * 试试String,可能 Long也可以
+     */
     @Id
-    private Long id;
+    private String id;
 
     @Field(type = FieldType.Text)
     private String name;
@@ -33,9 +37,12 @@ public class EsProduct{
     @Field(type = FieldType.Keyword)
     private List<String> categories;
 
+    /**
+     * 不能用LocalDateTIme
+     */
     @Field(type = FieldType.Date)
-    private LocalDateTime createTime;
+    private Instant createTime;
 
     @Field(type = FieldType.Date)
-    private LocalDateTime updateTime;
+    private Instant updateTime;
 }

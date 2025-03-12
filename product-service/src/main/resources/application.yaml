@@ -11,6 +11,7 @@ dubbo:
     address: nacos://localhost:8848
     register-mode: instance
 
+# 不加上这些跑不起来
 spring:
   autoconfigure:
     exclude:

@@ -1,25 +1,19 @@
 package com.devdynamo.product;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
-import com.devdynamo.product.document.EsProduct;
-import com.devdynamo.product.repository.EsProductRepository;
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.message.BasicHeader;
-import org.elasticsearch.client.RestClient;
+import com.devdynamo.product.elasticsearch.document.EsProduct;
+import com.devdynamo.product.elasticsearch.repository.EsProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-//import com.devdynamo.product.entity.elasticsearch.Product;
-//import com.devdynamo.product.repository.ProductElasticsearchRepository;
+
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 基本通过了测试
+ */
 @SpringBootTest
 public class ElasticSearchTests {
 
@@ -33,39 +27,27 @@ public class ElasticSearchTests {
         product.setCategories(categories);
         product.setDescription("test product");
         product.setName("test name");
-        product.setCreateTime(LocalDateTime.now());
-        product.setUpdateTime(LocalDateTime.now());
+        product.setCreateTime(Instant.now());
+        product.setUpdateTime(Instant.now());
         productRepository.save(product);
         // Save to Elasticsearch
         productRepository.save(product);
     }
 
-    // 依然失败
+
+//    Error creating bean with name 'productRepository' defined
+//    in com.devdynamo.product.repository.ProductRepository defined in
+//    @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration:
+//    Not a managed type: class com.devdynamo.product.elasticsearch.document.EsProduct
     @Test
-    public void create() throws IOException {
-        // URL and API key
-        String serverUrl = "https://localhost:9200";
-        String apiKey = "VnVhQ2ZHY0JDZGJrU...";
-
-// Create the low-level client
-        RestClient restClient = RestClient
-                .builder(HttpHost.create(serverUrl))
-                .setDefaultHeaders(new Header[]{
-                        new BasicHeader("Authorization", "ApiKey " + apiKey)
-                })
-                .build();
-
-// Create the transport with a Jackson mapper
-        ElasticsearchTransport transport = new RestClientTransport(
-                restClient, new JacksonJsonpMapper());
-
-// And create the API client
-        ElasticsearchClient esClient = new ElasticsearchClient(transport);
-
-// Use the client...
-
-// Close the client, also closing the underlying transport object and network connections.
-        esClient.close();
-
+    public void query() throws IOException {
+        productRepository.findAll().forEach(System.out::println);
     }
+
+    @Test
+    public void deleteProduct() throws IOException {
+        productRepository.deleteAll();
+    }
+
+
 }
