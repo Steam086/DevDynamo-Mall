@@ -15,7 +15,7 @@ import com.devdynamo.dto.CreditCardInfo;
 import com.devdynamo.payment.repository.PaymentRepository;
 import com.devdynamo.service.OrderService;
 import com.devdynamo.service.PaymentService;
-import com.devdynamo.entity.Payment;
+import com.devdynamo.entity.payment.Payment;
 
 import lombok.extern.slf4j.Slf4j;
 

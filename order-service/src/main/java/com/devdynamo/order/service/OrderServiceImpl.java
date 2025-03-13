@@ -1,8 +1,8 @@
 package com.devdynamo.order.service;
 
 import com.devdynamo.constant.OrderStatus;
-import com.devdynamo.entity.Order;
-import com.devdynamo.entity.OrderItem;
+import com.devdynamo.entity.order.Order;
+import com.devdynamo.entity.order.OrderItem;
 import com.devdynamo.order.repository.OrderRepository;
 import com.devdynamo.service.OrderService;
 

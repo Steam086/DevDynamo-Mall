@@ -1,4 +1,4 @@
-package com.devdynamo.entity;
+package com.devdynamo.entity.payment;
 
 import com.devdynamo.constant.PaymentStatus;
 import jakarta.persistence.*;

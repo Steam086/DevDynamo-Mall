@@ -1,7 +1,7 @@
 package com.devdynamo.service;
 
-import com.devdynamo.entity.Cart;
-import com.devdynamo.entity.CartItem;
+import com.devdynamo.entity.cart.Cart;
+import com.devdynamo.entity.cart.CartItem;
 
 /**
  * 购物车服务接口，实现了

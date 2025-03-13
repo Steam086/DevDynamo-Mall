@@ -3,7 +3,7 @@ package com.devdynamo.service;
 import com.devdynamo.dto.UserRegisterDTO;
 import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserUpdateDTO;
-import com.devdynamo.entity.User;
+import com.devdynamo.entity.user.User;
 
 /**
  * 这是用户服务的API接口，用于处理用户相关的业务逻辑

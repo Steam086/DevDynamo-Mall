@@ -1,0 +1,32 @@
+dubbo:
+  provider:
+    delay: 3000
+  protocol:
+    name: dubbo
+  application:
+    #    qos-port: 22222
+    logger: slf4j
+    qos-port:
+  registry:
+    address: nacos://localhost:8848
+    register-mode: instance
+
+# 不加上这些跑不起来
+spring:
+  autoconfigure:
+    exclude:
+    - org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration
+    - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
+    - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration
+    - org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+  elasticsearch:
+    uris: http://localhost:9200
+#    username: jjr
+#    password: 12345678
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /
+    username: admin
+    password: pass123

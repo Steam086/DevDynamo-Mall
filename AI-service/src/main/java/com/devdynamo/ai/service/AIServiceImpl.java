@@ -1,6 +1,6 @@
 package com.devdynamo.ai.service;
 
-import com.devdynamo.entity.Order;
+import com.devdynamo.entity.order.Order;
 import com.devdynamo.service.AIService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;

@@ -1,6 +1,6 @@
 package com.devdynamo.service;
 import com.devdynamo.dto.CreditCardInfo;
-import com.devdynamo.entity.Payment;
+import com.devdynamo.entity.payment.Payment;
 
 public interface PaymentService {
     /**

@@ -1,27 +1,34 @@
-package com.devdynamo.entity;
+package com.devdynamo.entity.order;
 
+import com.devdynamo.constant.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
+// 使用反引号包裹order关键字
+
+@Table(name = "`order`")
 @Data
-public class User {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
+    // 订单创建者
+    private Long userId;
 
-    @Column(unique = true, nullable = false)
-    private String username;
+    // 订单填写的地址
+    @ManyToOne
+//    @JoinColumn(name = "address_id")
+    Address address;
 
-    @Column(nullable = false)
-    private String password;
+    @OneToMany
+    List<OrderItem> orderItems;
 
-    private String email;
-    private String phone;
-    private String firstName;
-    private String lastName;
+    // 订单状态，枚举
+    OrderStatus status;
 
     @Column(name = "create_time")
     private LocalDateTime createTime;
@@ -41,7 +48,4 @@ public class User {
         this.updateTime = LocalDateTime.now();
     }
 
-    public String getName() {
-        return username;
-    }
 }

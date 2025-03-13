@@ -1,6 +1,6 @@
 package com.devdynamo.service;
 
-import com.devdynamo.entity.Order;
+import com.devdynamo.entity.order.Order;
 
 import java.util.List;
 

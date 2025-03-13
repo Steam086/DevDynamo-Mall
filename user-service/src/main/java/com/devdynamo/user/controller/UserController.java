@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.devdynamo.dto.UserLoginDTO;
 import com.devdynamo.dto.UserRegisterDTO;
 import com.devdynamo.dto.UserUpdateDTO;
-import com.devdynamo.entity.User;
+import com.devdynamo.entity.user.User;
 import com.devdynamo.service.UserService;
 import com.devdynamo.user.util.JwtUtil;
 import jakarta.validation.Valid;
