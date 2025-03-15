@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RabbitMQListener {
 
-    private static final String QUEUE_NAME = "product-queue";
+    private static final String QUEUE_NAME = "queue-product";
 
     private final ProductRepository productRepository;
 
