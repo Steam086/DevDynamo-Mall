@@ -40,9 +40,8 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct;
         try{
             savedProduct = productRepository.save(product);
-            Long id = savedProduct.getId();
             // 将id发送到MQ,消费者处理同步逻辑
-            rabbitTemplate.convertAndSend(PRODUCT_QUEUE, id);
+            rabbitTemplate.convertAndSend(PRODUCT_QUEUE, savedProduct);
         }
         catch(Exception e){
             log.error(e.getMessage());

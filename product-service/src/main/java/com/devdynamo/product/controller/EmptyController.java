@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 测试专用Controller
@@ -44,16 +45,11 @@ public class EmptyController {
      */
     @PostMapping("/create")
     ResponseEntity<?> create(@RequestBody Product product){
-        // Q: 这里的saveAll会不会判断是否已经存在，如果已经存在可以不修改
         List<Category> categories = (product.getCategories());
         categories = categories.stream()
                 .map(category -> {
                     Category byName = categoryRepository.findByName(category.getName());
-                    if(byName == null) {
-                        return categoryRepository.save(category);
-                    }else{
-                        return byName;
-                    }
+                    return Objects.requireNonNullElseGet(byName, () -> categoryRepository.save(category));
                 }).toList();
         product.setCategories(categories);
         Product save = productRepository.save(product);
